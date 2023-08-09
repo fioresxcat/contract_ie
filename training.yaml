@@ -1,0 +1,70 @@
+data:
+  train_dir: /data/tungtx2/huggingface/latest_data_245_final_2/train
+  val_dir: /data/tungtx2/huggingface/latest_data_245_final_2/test
+  ls_exclude_dir: []
+
+model:
+  pretrained_path: null
+  model_type: layoutlmv3
+
+training:
+  trainer_args:
+    output_dir: ckpt/unified/last_model_final/lmv3_train+val
+    overwrite_output_dir: False
+    num_train_epochs: 100
+    learning_rate: 0.00005
+    weight_decay: 0.01
+    evaluation_strategy: steps
+    save_strategy: steps
+    eval_steps: 250
+    save_steps: 250
+    save_total_limit: 10
+    load_best_model_at_end: True
+    metric_for_best_model: f1
+    greater_is_better: True
+    warmup_ratio:  0.1
+    do_eval: True
+    no_cuda: False
+  
+  data_args:
+    mask_type: unified
+    widen_range_x:
+    - 0
+    - 0.01
+    widen_range_y:
+    - 0.15
+    - 0.3
+    ls_disable_marker: []
+    # - marker_bank_name
+    # - marker_represented_name
+    # - marker_tax
+    # - marker_swift_code
+    # - marker_company_address
+    # - marker_company_name
+    # - marker_bank_address
+    # - marker_represented_position
+    augment: True
+    remove_accent: True
+    stride: 128
+    carefully_choose_idx: True
+  
+  batch_size: 4
+
+validation:
+  data_args:
+    mask_type: unmasked
+    widen_range_x: 0 
+    widen_range_y: 0.2
+    ls_disable_marker: []
+    # - marker_bank_name
+    # - marker_represented_name
+    # - marker_tax
+    # - marker_swift_code
+    # - marker_company_address
+    # - marker_company_name
+    # - marker_bank_address
+    # - marker_represented_position
+    augment: False
+    remove_accent: True
+    stride: 128
+    carefully_choose_idx: False
